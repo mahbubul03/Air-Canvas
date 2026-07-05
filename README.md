@@ -38,6 +38,27 @@ Draw in thin air using nothing but your webcam and your index finger. Air Canvas
 
 ---
 
+## Where do saved drawings go?
+
+Near the top of `air_canvas.py` there's a setting:
+
+```python
+SAVE_DIR = None
+```
+
+- **Default (`None`)** — pressing `S` saves a PNG into a `saved_drawings/` folder created automatically right next to the script. No setup needed.
+- **Custom folder** — set it to any path you want, for example:
+  ```python
+  SAVE_DIR = "C:/Users/you/Pictures/AirCanvas"    # Windows
+  SAVE_DIR = "/Users/you/Pictures/AirCanvas"      # macOS
+  SAVE_DIR = "/home/you/Pictures/AirCanvas"       # Linux
+  ```
+  The folder is created automatically if it doesn't already exist.
+
+Every time you save, the terminal prints the exact full path of the file, so you always know where it landed.
+
+---
+
 ## Requirements
 
 - Python 3.9 – 3.11 (MediaPipe does not yet support all newer Python versions — 3.10 is the safest bet)
@@ -117,6 +138,11 @@ Press `Q` at any time to quit.
   - Windows: `C:/Windows/Fonts/arialbd.ttf`
   - macOS: `/System/Library/Fonts/Supplemental/Arial Bold.ttf`
 
+**Can't find your saved PNG**
+- By default it's saved in a `saved_drawings/` folder created next to `air_canvas.py` — not in some system or temp folder. Check there first.
+- The terminal also prints the exact file path every time you press `S`, so you can copy it directly from there.
+- If you set a custom `SAVE_DIR`, double check the path exists and uses forward slashes (`/`) or escaped backslashes (`\\`), even on Windows.
+
 **Low FPS / laggy tracking**
 - Lower the capture resolution by changing `cap.set(3, 1280)` / `cap.set(4, 720)` to smaller values like `640` / `480`.
 - Close other apps using the GPU/CPU heavily.
@@ -132,6 +158,7 @@ Press `Q` at any time to quit.
 air-canvas/
 ├── air_canvas.py       # Main application
 ├── requirements.txt    # Python dependencies
+├── saved_drawings/     # Auto-created — your saved PNGs land here by default
 └── README.md
 ```
 
@@ -152,3 +179,4 @@ Contributions and PRs welcome!
 ## License
 
 MIT — feel free to use, modify, and share.
+By-MAHBUBUL ISLAM
