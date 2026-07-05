@@ -2,6 +2,7 @@
 Air Canvas - Smart Text Beautification (v2)
 ---------------------------------------------
 Draw in the air with your index finger, tracked via a webcam + MediaPipe.
+By-MAHBUBUL ISLAM
 
 Gestures:
   - Index finger only up      -> Draw
@@ -21,6 +22,7 @@ import numpy as np
 import easyocr
 import time
 import threading
+import os
 from collections import deque
 from PIL import Image, ImageDraw, ImageFont
 
@@ -34,7 +36,21 @@ hands = mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.7, min_tracki
 print("Loading OCR model (first run may take a moment)...")
 reader = easyocr.Reader(['en'])
 
-OUTPUT_DIR = "/mnt/user-data/outputs"
+# ---------------------------------------------------------------------------
+# Where should saved PNGs go?
+# Leave as None to save in the same folder as this script (a "saved_drawings"
+# subfolder gets created automatically). Or set your own path, e.g.:
+#   SAVE_DIR = "C:/Users/you/Pictures/AirCanvas"      (Windows)
+#   SAVE_DIR = "/Users/you/Pictures/AirCanvas"        (macOS)
+#   SAVE_DIR = "/home/you/Pictures/AirCanvas"         (Linux)
+# ---------------------------------------------------------------------------
+SAVE_DIR = None
+
+if SAVE_DIR is None:
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    OUTPUT_DIR = os.path.join(SCRIPT_DIR, "saved_drawings")
+else:
+    OUTPUT_DIR = SAVE_DIR
 
 COLORS = {
     "g": ("Green", (0, 255, 0)),
@@ -136,9 +152,8 @@ def trigger_beautify():
 
 
 def save_canvas(display_img):
-    import os
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-    fname = f"{OUTPUT_DIR}/air_canvas_{int(time.time())}.png"
+    fname = os.path.join(OUTPUT_DIR, f"air_canvas_{int(time.time())}.png")
     cv2.imwrite(fname, display_img)
     print(f"Saved: {fname}")
     return fname
